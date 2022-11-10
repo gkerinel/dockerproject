@@ -1,1 +1,19 @@
+pipeline {
+    agent any
 
+    stages {
+        stage('Build') {
+            steps {
+                echo 'Building..'
+                
+                 git 'https://github.com/gkerinel/dockerproject.git'
+            }
+        }
+       
+        stage('Deploy') {
+            steps {
+                echo 'Deploying....'
+            }
+        }
+    }
+}
