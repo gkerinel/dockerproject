@@ -37,7 +37,9 @@ sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin
 
 5)Dockerfile has been created.
 
-6)Jenkins installed locally with shell script.
+6)Project pushed to GitHub.
+
+7)Jenkins installed locally with shell script.
 
 curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo tee /usr/share/keyrings/jenkins-keyring.asc > /dev/null
 echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable binary/ | sudo tee \
