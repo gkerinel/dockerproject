@@ -8,6 +8,7 @@
 4)A shell script to install the Docker has been created.
 
 #SET UP THE REPOSITORY
+
 #Update the apt package index and install packages to allow apt to use a repository over HTTPS:
 
 sudo apt-get update -y
@@ -25,6 +26,7 @@ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o 
 echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null -y
 
 #INSTALL DOCKER ENGINE
+
 #Update the apt package index:
 
 sudo apt-get update -y
