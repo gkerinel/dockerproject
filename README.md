@@ -3,9 +3,10 @@
 
 2)Ubuntu operating system installed in virtual machine.
 
-3)Connected to virtual device with SSH
+3)Connected to virtual machine with SSH
 
 4)A shell script to install the Docker has been created.
+
 #SET UP THE REPOSITORY
 #Update the apt package index and install packages to allow apt to use a repository over HTTPS:
 
