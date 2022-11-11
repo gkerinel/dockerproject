@@ -1,12 +1,19 @@
 pipeline {
     agent any
+    
+     stage('Checkout') {
+            steps {
+                echo 'Checkout....'
+                 git 'https://github.com/gkerinel/dockerproject.git'
+            }
+        }
 
     stages {
         stage('Build') {
             steps {
                 echo 'Building..'
                 
-                 git 'https://github.com/gkerinel/dockerproject.git'
+                
             }
         }
        
