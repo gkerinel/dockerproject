@@ -7,8 +7,9 @@ pipeline {
     
      stage('Checkout') {
             steps {
-                echo 'Checkout....'
-                 git 'https://github.com/gkerinel/dockerproject.git'
+                sh "echo 'Checkout....'"
+                sh "rm -r dockerproject"
+                sh "git clone 'https://github.com/gkerinel/dockerproject.git'"
             }
         }
     
@@ -17,17 +18,18 @@ pipeline {
     
         stage('Build') {
             steps {
-                echo 'Building..'
-                
-                sh 'docker image build -t nginx:0.4 .'
+                echo "'Building..'"
+                sh "ls"
+                sh "docker image build -t nginx:latest -f ./dockerproject/Dockerfile.txt ."
             }
         }
        
         stage('Deploy') {
             steps {
-                echo 'Deploying....'
-                
-                sh 'docker run -d -p 8888:80 nginx:0.4'
+                sh "echo 'Deploying....'"
+                sh 'export containerid=$(docker ps -aqf \\"name=nginx\\")'
+                sh 'docker stop $containerid && docker rm $containerid'
+                sh "docker run -d -p 8889:80 nginx:latest"
             }
         }
     }
