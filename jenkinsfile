@@ -13,7 +13,7 @@ pipeline {
             steps {
                 echo 'Building..'
                 
-                sh docker image build -t nginx:0.4 .
+                sh 'docker image build -t nginx:0.4 .'
             }
         }
        
@@ -21,7 +21,7 @@ pipeline {
             steps {
                 echo 'Deploying....'
                 
-                sh docker run -d -p 8888:80 nginx:0.4
+                sh 'docker run -d -p 8888:80 nginx:0.4'
             }
         }
     }
