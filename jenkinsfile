@@ -26,10 +26,13 @@ pipeline {
        
         stage('Deploy') {
             steps {
-                sh "echo 'Deploying....'"
-                sh 'export containerid=$(docker ps -aqf \\"name=nginx\\")'
-                sh 'docker stop $containerid && docker rm $containerid'
-                sh "docker run -d -p 8889:80 nginx:latest"
+                 sh ''' 
+            export containerid=\$(docker ps -aqf name=nginx)
+            docker stop $containerid 
+            docker rm $containerid 
+           
+            '''
+            sh "docker run -d -p 8888:80 --name enginx nginx:latest"
             }
         }
     }
