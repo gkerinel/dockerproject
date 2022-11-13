@@ -8,7 +8,13 @@ pipeline {
      stage('Checkout') {
             steps {
                 sh "echo 'Checkout....'"
-                sh "rm -r dockerproject"
+                sh '''
+                if [ -d "dockerproject" ]; then
+                  rm -Rf dockerproject; 
+                else 
+                  echo "empty"
+                fi
+                '''
                 sh "git clone 'https://github.com/gkerinel/dockerproject.git'"
             }
         }
