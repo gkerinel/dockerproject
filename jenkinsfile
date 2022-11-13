@@ -33,6 +33,13 @@ pipeline {
         stage('Deploy') {
             steps {
                sh "echo 'Deploying....'"
+               sh '''
+            if lsof -Pi :8888 -sTCP:LISTEN -t >/dev/null ; then
+              echo "running"
+            else
+              echo "not running"
+            fi
+            '''
             
             sh ''' 
             export containerid=\$(docker ps -aqf name=nginx)
