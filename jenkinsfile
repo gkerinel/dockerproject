@@ -26,18 +26,18 @@ pipeline {
        
         stage('Deploy') {
             steps {
-                sh "echo 'Deploying....'"
+               sh "echo 'Deploying....'"
             
             sh ''' 
             export containerid=\$(docker ps -aqf name=nginx)
-            if [ "$( docker container inspect -f '{{.State.Running}}' )"== "true" ];then  
-            
-            docker stop $containerid 
-            docker rm $containerid 
-            fi
+           if [ -n "$containerid" ]; then
+              docker rm -f $containerid
+           else
+              echo "Containerid is empty"
+           fi
             '''
-            sh "docker run -d --name nginx${BUILD_NUMBER} nginx:${BUILD_NUMBER}"
-   
+            sh  "docker run -d --name nginx nginx:${BUILD_NUMBER}"
+            
             }
         }
     }
