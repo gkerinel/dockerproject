@@ -26,7 +26,7 @@ pipeline {
             steps {
                 echo "'Building..'"
                 sh "ls"
-                sh "docker image build -t nginx:latest -f ./dockerproject/Dockerfile.txt ."
+                sh "docker image build -t nginx:${BUILD_NUMBER} -f ./dockerproject/Dockerfile.txt ."
             }
         }
        
