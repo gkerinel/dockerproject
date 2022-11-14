@@ -35,6 +35,7 @@ pipeline {
                sh "echo 'Deploying....'"
                sh '''
             if lsof -Pi :8888 -sTCP:LISTEN -t >/dev/null ; then
+              #sudo fuser -k 8888/tcp
               echo "running"
             else
               echo "not running"
