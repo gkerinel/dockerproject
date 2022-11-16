@@ -1,7 +1,7 @@
 pipeline {
     agent any
     
-    
+   
 
     stages {
     
@@ -29,30 +29,50 @@ pipeline {
                 sh "docker image build -t nginx:${BUILD_NUMBER} -f ./dockerproject/Dockerfile.txt ."
             }
         }
-       
-        stage('Deploy') {
-            steps {
-               sh "echo 'Deploying....'"
-               sh '''
-            if lsof -Pi :8888 -sTCP:LISTEN -t >/dev/null ; then
-              #sudo fuser -k 8888/tcp
-              echo "running"
-            else
-              echo "not running"
-            fi
-            '''
+        
+        stage ('Scan & Tag & Push') {
             
-            sh ''' 
-            export containerid=\$(docker ps -aqf name=nginx)
-           if [ -n "$containerid" ]; then
-              docker rm -f $containerid
-           else
-              echo "Containerid is empty"
-           fi
-            '''
-            sh  "docker run -d --name nginx nginx:${BUILD_NUMBER}"
+            steps{
+                
+                sh 'trivy --no-progress --exit-code 1 --severity ,HIGH,CRITICAL nginx:${BUILD_NUMBER}'
+                
+                withCredentials([string(credentialsId: 'dockerhub', variable: 'dockerhub')]) {
+                sh 'docker login -u gkerinelproject -p ${dockerhub}'
+                sh 'docker tag nginx:${BUILD_NUMBER} gkerinelproject/nginx:${BUILD_NUMBER} '
+                sh 'docker push gkerinelproject/nginx:${BUILD_NUMBER} '
+            }
             
+         }
+        }
+         stage ('Delete local images') {
+            
+            steps{
+                 sh '''
+                 docker rmi -f gkerinelproject/nginx:${BUILD_NUMBER}
+                '''
             }
         }
+        
+       
+        stage ('Pull and Run') {
+            
+            steps{
+                
+            sh ''' 
+            export containerid=\$(docker ps -aqf name=nginx)
+            if [ -n "$containerid" ]; then
+              docker rm -f $containerid
+            else
+              echo "Containerid is empty"
+            fi
+            '''
+                sh 'docker pull gkerinelproject/nginx:${BUILD_NUMBER}'
+                sh "docker run -d -p 8888:80 --name nginx gkerinelproject/nginx:${BUILD_NUMBER}"
+            }
+            
+        }
+         
     }
 }
+
+
